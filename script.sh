@@ -36,6 +36,27 @@ echo "[*] Capturing Traffic"
 #sudo tcpdump -i any -n tcp -w tcpdump.out -c 50000
 sudo tcpdump -w tcpdump.out
 
+echo "[*] Checking /etc/hosts for malicious entries"
+sudo cat /etc/hosts > etc_hosts.out
+
+echo "[*] Checking that software update is enabled"
+sudo software-update --schedule > update_check.out
+
+echo "[*] Checking firewall rules and settings"
+sudo ipfw list > ipfw.out
+defaults read /Library/Preferences/com.apple.alf globalstate > firewall_state.out
+
+echo "[*] Creating log tarball"
+sudo tar -zcvf standard_logs.tar.gz /var/log
+sudo tar -zcvf mac_logs.tar.gz /Library/Logs
+
+echo "[*] Checking kernel objects"
+sudo kextstat > kextstat.out
+
+echo "[*] Checking crontab and autolaunch listings"
+sudo crontab -l > crontab.out
+sudo launchctl > launchctl.out
+
 echo "[*] Compressing"
 cd ..
 tar zcf out.tar out
