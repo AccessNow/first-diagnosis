@@ -20,6 +20,12 @@ sudo lsof -i TCP -n > lsof.out
 echo "[GETTING IP address]"
 curl http://bot.whatismyipaddress.com/ > ip.out
 
+echo "Checking /etc/resolv.conf, did somebody mess with our DNS setup?"
+cat /etc/resolv.conf > resolv.conf.out
+
+echo "Checking network interfaces"
+ifconfig -a > ifconfig.out
+
 echo "[NSLOOKUP]"
 nslookup twitter.com > twitter_resolv.out
 nslookup www.facebook.com > facebook_resolv.out
@@ -31,10 +37,11 @@ sudo traceroute -P tcp -p 443 twitter.com > twitter_trace.out
 sudo traceroute -P tcp -p 443 facebook.com > facebook_trace.out
 sudo traceroute -P tcp -p 443 google.com > google_trace.out
 sudo traceroute -P tcp -p 443 accessnow.org > access_trace.out
+sudo traceroute -P tcp -p 443 eff.org > eff_trace.out
 
 echo "[*] Capturing Traffic"
 #sudo tcpdump -i any -n tcp -w tcpdump.out -c 50000
-sudo tcpdump -w tcpdump.out
+sudo tcpdump -i any -w tcpdump.out -c 50000
 
 echo "[*] Checking /etc/hosts for malicious entries"
 sudo cat /etc/hosts > etc_hosts.out
